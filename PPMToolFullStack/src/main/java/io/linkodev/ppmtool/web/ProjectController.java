@@ -1,6 +1,7 @@
 package io.linkodev.ppmtool.web;
 
 import io.linkodev.ppmtool.domain.Project;
+import io.linkodev.ppmtool.services.MapValidationErrorService;
 import io.linkodev.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,16 +25,16 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @PostMapping("")
     public ResponseEntity<?> createdNewProject(@Valid @RequestBody Project project, BindingResult result) {
 
-        if (result.hasErrors()) {
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
-            Map<String, String> errorMap = new HashMap<>();
-
-            result.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
-
-            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        if (errorMap != null) {
+            return errorMap;
         }
 
         Project project1 = projectService.saveOrUpdateProject(project);
