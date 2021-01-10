@@ -1,6 +1,7 @@
 package io.linkodev.ppmtool.web;
 
 
+import io.linkodev.ppmtool.domain.Project;
 import io.linkodev.ppmtool.domain.ProjectTask;
 import io.linkodev.ppmtool.services.MapValidationErrorService;
 import io.linkodev.ppmtool.services.ProjectTaskService;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/backlog")
@@ -35,5 +37,11 @@ public class BacklogController {
         ProjectTask projectTaskCRUD = projectTaskService.addProjectTask(backlog_id, projectTask);
 
         return new ResponseEntity<>(projectTaskCRUD, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{backlog_id}")
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id) {
+
+        return projectTaskService.findBacklogById(backlog_id);
     }
 }

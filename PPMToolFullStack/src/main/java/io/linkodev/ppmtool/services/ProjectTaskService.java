@@ -2,11 +2,14 @@ package io.linkodev.ppmtool.services;
 
 
 import io.linkodev.ppmtool.domain.Backlog;
+import io.linkodev.ppmtool.domain.Project;
 import io.linkodev.ppmtool.domain.ProjectTask;
 import io.linkodev.ppmtool.repositories.BacklogRepository;
 import io.linkodev.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectTaskService {
@@ -35,5 +38,9 @@ public class ProjectTaskService {
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+     public Iterable<ProjectTask> findBacklogById(String backlog_id) {
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlog_id);
     }
 }
