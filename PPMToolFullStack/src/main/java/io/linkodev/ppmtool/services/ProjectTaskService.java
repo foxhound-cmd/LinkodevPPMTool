@@ -24,6 +24,7 @@ public class ProjectTaskService {
         Integer backlogSequence = backlog.getPTSequence();
         projectTask.setProjectSequence(projectIdentifier + "-" + (++backlogSequence));
         projectTask.setProjectIdentifier(projectIdentifier);
+        backlog.setPTSequence(backlogSequence);
 
         if (projectTask.getPriority() == null || projectTask.getPriority() == 0) {
             projectTask.setPriority(3);
