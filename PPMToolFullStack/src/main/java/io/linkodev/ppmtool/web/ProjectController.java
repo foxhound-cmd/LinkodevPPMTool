@@ -1,6 +1,7 @@
 package io.linkodev.ppmtool.web;
 
 import io.linkodev.ppmtool.domain.Project;
+import io.linkodev.ppmtool.domain.ProjectTask;
 import io.linkodev.ppmtool.services.MapValidationErrorService;
 import io.linkodev.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,6 @@ public class ProjectController {
         projectService.deleteProjectByIdentifier(projectId);
         return new ResponseEntity<>("Project with ID: '" + projectId.toUpperCase() + "' was deleted", HttpStatus.OK);
     }
+
+
 }
