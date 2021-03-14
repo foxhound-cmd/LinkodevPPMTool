@@ -30,18 +30,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 /* to enable h2 db */
-        .headers().frameOptions().sameOrigin().and()
-        .authorizeRequests()
-        .antMatchers(
-                "/",
-                "/favicon.ico",
-                "/**/*.png",
-                "/**/*.gif",
-                "/**/*.svg",
-                "/**/*.jpg",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js"
-        ).permitAll().anyRequest().authenticated();
+                .headers().frameOptions().sameOrigin().and()
+                .authorizeRequests()
+                .antMatchers(
+                        "/",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
+                ).permitAll()
+                .antMatchers("/api/users/**").permitAll()
+                .anyRequest().authenticated();
     }
 }
