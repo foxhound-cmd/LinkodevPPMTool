@@ -3,6 +3,7 @@ package io.linkodev.ppmtool.web;
 import io.linkodev.ppmtool.domain.User;
 import io.linkodev.ppmtool.services.MapValidationErrorService;
 import io.linkodev.ppmtool.services.UserService;
+import io.linkodev.ppmtool.validator.UserValidator;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
+
+        userValidator.validate(user, result);
+
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) {
             return errorMap;
