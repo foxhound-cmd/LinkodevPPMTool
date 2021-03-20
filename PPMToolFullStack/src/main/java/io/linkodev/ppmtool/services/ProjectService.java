@@ -10,6 +10,7 @@ import io.linkodev.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Locale;
 
 @Service
@@ -58,27 +59,28 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if (project == null) {
             throw new ProjectIdException("Project ID '" + projectId.toUpperCase() + "' does not exist");
         }
+
+        if (!project.getProjectLeader().equals(username)) {
+            throw new ProjectIdException("Project ID '" + projectId.toUpperCase() + "' is not found in your account");
+        }
+
+
         return project;
     }
 
-    public Iterable<Project> findAllProjects() {
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username) {
+        return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier(String projectId) {
-        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+    public void deleteProjectByIdentifier(String projectId, String username) {
 
-        if (project == null) {
-            throw new ProjectIdException("Cannot delete project with ID '" + projectId.toUpperCase() +
-                    "'. This project does not exist");
-        }
 
-        projectRepository.delete(project);
+        projectRepository.delete(findProjectByIdentifier(projectId, username));
     }
 }
