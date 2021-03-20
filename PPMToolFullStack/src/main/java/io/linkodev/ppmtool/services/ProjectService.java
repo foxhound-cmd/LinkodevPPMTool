@@ -4,6 +4,7 @@ import io.linkodev.ppmtool.domain.Backlog;
 import io.linkodev.ppmtool.domain.Project;
 import io.linkodev.ppmtool.domain.User;
 import io.linkodev.ppmtool.exceptions.ProjectIdException;
+import io.linkodev.ppmtool.exceptions.ProjectNotFoundException;
 import io.linkodev.ppmtool.repositories.BacklogRepository;
 import io.linkodev.ppmtool.repositories.ProjectRepository;
 import io.linkodev.ppmtool.repositories.UserRepository;
@@ -27,6 +28,16 @@ public class ProjectService {
 
     public Project saveOrUpdateProject(Project project, String username) {
 
+
+        if (project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+            if (existingProject != null && !existingProject.getProjectLeader().equals(username)) {
+                throw new ProjectNotFoundException("Project not found in your account");
+            } else if (existingProject == null) {
+                throw new ProjectNotFoundException("Project with ID: '" +
+                        project.getProjectIdentifier() + "' cannot be updated because doesn't exist");
+            }
+        }
 
         try {
 
