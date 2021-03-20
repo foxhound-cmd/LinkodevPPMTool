@@ -2,9 +2,11 @@ package io.linkodev.ppmtool.services;
 
 import io.linkodev.ppmtool.domain.Backlog;
 import io.linkodev.ppmtool.domain.Project;
+import io.linkodev.ppmtool.domain.User;
 import io.linkodev.ppmtool.exceptions.ProjectIdException;
 import io.linkodev.ppmtool.repositories.BacklogRepository;
 import io.linkodev.ppmtool.repositories.ProjectRepository;
+import io.linkodev.ppmtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,19 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project) {
+    @Autowired
+    private UserRepository userRepository;
 
+    public Project saveOrUpdateProject(Project project, String username) {
 
 
         try {
+
+            User user = userRepository.findByUsername(username);
+
+            project.setUser(user);
+            project.setProjectLeader(user.getUsername());
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             String projectIdentifier = project.getProjectIdentifier().toUpperCase();
 
@@ -38,7 +48,6 @@ public class ProjectService {
             } else {
                 project.setBacklog(backlogRepository.findByProjectIdentifier(projectIdentifier));
             }
-
 
 
             return projectRepository.save(project);
