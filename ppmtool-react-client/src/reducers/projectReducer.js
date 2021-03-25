@@ -1,4 +1,3 @@
-import { act } from "react-dom/test-utils";
 import { DELETE_PROJECT, GET_PROJECT, GET_PROJECTS } from "../actions/types";
 
 const initialState = {

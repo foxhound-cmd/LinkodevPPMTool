@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { conect, connect } from "react-redux";
+import { connect } from "react-redux";
 import { deleteProject } from "../../actions/projectActions";
 
 class ProjectItem extends Component {
