@@ -35,6 +35,8 @@ export const login = (LoginRequest) => async (dispatch) => {
     localStorage.setItem("jwtToken", token);
     setJWToken(token);
     const decoded = jwt_decode(token);
+    console.log(decoded);
+
     dispatch({
       type: SET_CURRENT_USER,
       payload: decoded,
