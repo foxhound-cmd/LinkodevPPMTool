@@ -19,6 +19,15 @@ export const createNewUser = (newUser, history) => async (dispatch) => {
   }
 };
 
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("jwtToken");
+  setJWToken(false);
+  dispatch({
+    type: SET_CURRENT_USER,
+    payload: {},
+  });
+};
+
 export const login = (LoginRequest) => async (dispatch) => {
   try {
     const res = await axios.post("/api/users/login", LoginRequest);
